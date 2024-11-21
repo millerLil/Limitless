@@ -29,7 +29,7 @@ def home():
         display: block;
         color: lightblue;
         text-align: center;
-        padding: 14px 16px;
+        padding-left: 10px;
         text-decoration: none;
       }
 
@@ -37,37 +37,45 @@ def home():
           display: block;
           color: white;
           text-align: center;
-          padding: 14px 16px;
+          padding-top: 27px;
+          padding-left: 30px;
           text-decoration: none;
       }
 
     /* Change the link color to #111 (black) on hover */
       li a:hover {
-          background-color: lightblue;
-          color: black;
+          color: lightblue;
       }
 
       .active {
-          background-color: lightskyblue;
-          color: black;
+          color: white;
+          padding-right: 14px;
+          border-radius: 12px;
       }
+
       #achievements-card {
+        border: 2px solid lightblue;
+        padding: 50px;
         color: black;
         display: block;
         float: left;
       }
 
-      #progress-card{
+      #progress-card {
+        border: 2px solid lightblue;
+        padding: 50px;
         color: black;
         display: inline-block;
       }
 
       #goals-card {
+        border: 2px solid lightblue;
+        padding: 50px;
         color: black;
         display: block;
         float: right;
       }
-
+    
       .cards-container {
         width: 100%;
         margin: 0 auto;
