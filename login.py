@@ -1,6 +1,39 @@
-from flask import Blueprint, request, redirect, url_for
+from flask import Flask, Blueprint, request, redirect, url_for, render_template
+import sqlite3
 
 login_bp = Blueprint("login", __name__)
+def get_db_connection():
+    conn = sqlite3.connect('userDB.db', timeout=10.0)
+    conn.row_factory = sqlite3.Row
+    return conn
+
+def check_user(name, pw):
+    # Get database connection
+    print("check user")
+    conn = get_db_connection()
+    # Create cursor and run select to look for username
+    cur = conn.cursor()
+    cur.execute('SELECT userName, userPW FROM users WHERE userName = ?', (name,))    
+    # First row returned (should be only)
+    row = cur.fetchone()
+    print(row[0])
+    print(row[1])
+    # Close connection
+    conn.close()
+    # Nothing returned - user not found
+    if row is None: 
+        # user not found
+        print("User name not found")
+    # Username found but password doesn't match
+    elif row[1] != pw:
+        # invalid password
+        print("Invalid password")
+    # Both match - successful login
+    else:
+        print("Successful login")
+        return True
+       
+    return False
 
 @login_bp.route("/", methods=["GET", "POST"])
 def login():
@@ -9,9 +42,13 @@ def login():
         username = request.form["username"]
         password = request.form["password"]
 
-        if username == "user" and password == "1234":
+        if check_user(username, password):
+        #if username == "user" and password == "1234":
+            import userStore
+            userStore.set_user(username)
             return redirect(url_for("home.home"))  # Redirect to the home page
         else:
+            userStore.set_user("")
             message = "Incorrect Username or Password."
 
     html = f"""
@@ -39,7 +76,7 @@ def login():
                 </div>
             </form>
             <div style="margin-top: 15px; color: blue; text-decoration: underline;">
-                <a href="#">Create an account</a>
+                <a href="./register">Create an account</a>
             </div>
             <p>{message}</p>
         </div>
