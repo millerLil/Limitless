@@ -17,7 +17,7 @@ with app.app_context():
     db.create_all()
 
 @app.route('/')
-def home():
+def goals_screen():
     goals = Goal.query.all()
     html = """
     <!DOCTYPE html>
@@ -40,6 +40,7 @@ def home():
             }
 
             li h2 {
+                color: blue;
                 display: block;
                 color: lightblue;
                 text-align: center;
