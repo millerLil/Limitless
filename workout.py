@@ -105,21 +105,20 @@ def workout():
                 <li><a href="/home/">Home</a></li>
                 <li><a href="/workout/" class="active">Workout</a></li>
                 <li><a href="/goals/">Goals</a></li>
-                <li style="float:right"><a class="active" href="/account/">Account</a></li> 
             </ul>
         </nav>
 
         <div class="icon-container">
             <div class="icon">
-                <img src="https://via.placeholder.com/50" alt="Walking">
+                <img src="/static/img/walking.jpg" alt="Walking">
                 <p><a href='/walk/'>Walking</a></p>
             </div>
             <div class="icon">
-                <img src="https://via.placeholder.com/50" alt="Lifting">
+                <img src="/static/img/weightlifting.png" alt="Lifting">
                 <p>Lifting</p>
             </div>
             <div class="icon">
-                <img src="https://via.placeholder.com/50" alt="HIIT">
+                <img src="/static/img/HIIT.jpg" alt="HIIT">
                 <p>HIIT</p>
             </div>
             <div class="icon">
