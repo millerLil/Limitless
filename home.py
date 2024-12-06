@@ -132,7 +132,6 @@ def home():
                     in culpa qui officia deserunt mollit anim id est laborum.
                 </p>
             </div>
-            <br></br>
 
             <div class="cards-container">
                 <div class="card" id="achievements-card">
@@ -153,6 +152,9 @@ def home():
     </html>
     """
     return html
+
+
+
 
 
 

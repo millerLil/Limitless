@@ -9,15 +9,12 @@ def get_db_connection():
 
 def check_user(name, pw):
     # Get database connection
-    print("check user")
     conn = get_db_connection()
     # Create cursor and run select to look for username
     cur = conn.cursor()
     cur.execute('SELECT userName, userPW FROM users WHERE userName = ?', (name,))    
     # First row returned (should be only)
     row = cur.fetchone()
-    print(row[0])
-    print(row[1])
     # Close connection
     conn.close()
     # Nothing returned - user not found
@@ -42,9 +39,9 @@ def login():
         username = request.form["username"]
         password = request.form["password"]
 
+        import userStore
         if check_user(username, password):
         #if username == "user" and password == "1234":
-            import userStore
             userStore.set_user(username)
             return redirect(url_for("home.home"))  # Redirect to the home page
         else:
