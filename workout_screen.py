@@ -12,7 +12,7 @@ def home():
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Limitless - Workout Page</title>
         <style>
-            /* General Styles */
+            
             body {
                 font-family: Arial, sans-serif;
                 margin: 0;
@@ -72,11 +72,15 @@ def home():
                 padding: 20px;
                 border-radius: 8px;
                 transition: transform 0.3s;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
             }
 
-            .icon img {
-                width: 50px;
-                height: 50px;
+            .icon .emoji {
+                font-size: 3rem; 
             }
 
             .icon:hover {
@@ -86,8 +90,13 @@ def home():
 
             .icon p {
                 margin-top: 10px;
-                font-size: 14px;
+                font-size: 16px;
                 font-weight: bold;
+            }
+
+            a {
+                text-decoration: none;
+                color: inherit;
             }
         </style>
     </head>
@@ -102,40 +111,40 @@ def home():
         </nav>
 
         <div class="icon-container">
-            <div class="icon">
-                <img src="images/walking.jpg" alt="Walking">
+            <a href="{{ url_for('walk') }}" class="icon">
+                <div class="emoji">🚶</div>
                 <p>Walking</p>
-            </div>
+            </a>
             <div class="icon">
-                <img src="https://via.placeholder.com/50" alt="Lifting">
+                <div class="emoji">🏋️</div>
                 <p>Lifting</p>
             </div>
             <div class="icon">
-                <img src="https://via.placeholder.com/50" alt="HIIT">
+                <div class="emoji">🔥</div>
                 <p>HIIT</p>
             </div>
             <div class="icon">
-                <img src="https://via.placeholder.com/50" alt="Running">
+                <div class="emoji">🏃</div>
                 <p>Running</p>
             </div>
             <div class="icon">
-                <img src="https://via.placeholder.com/50" alt="Yoga">
+                <div class="emoji">🧘</div>
                 <p>Yoga</p>
             </div>
             <div class="icon">
-                <img src="https://via.placeholder.com/50" alt="Sports">
+                <div class="emoji">⚽</div>
                 <p>Sports</p>
             </div>
             <div class="icon">
-                <img src="https://via.placeholder.com/50" alt="Swimming">
+                <div class="emoji">🏊</div>
                 <p>Swimming</p>
             </div>
-            <div class="icon">
-                <img src="https://via.placeholder.com/50" alt="Recommendation">
+            <a href="{{ url_for('rec') }}" class="icon">
+                <div class="emoji">💡</div>
                 <p>Recommendation</p>
-            </div>
+            </a>
             <div class="icon">
-                <img src="https://via.placeholder.com/50" alt="Cycling">
+                <div class="emoji">🚴</div>
                 <p>Cycling</p>
             </div>
         </div>
@@ -146,4 +155,5 @@ def home():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
 
