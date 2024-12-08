@@ -10,6 +10,8 @@ def workout():
             return redirect(url_for("walk.walk"))  
         if request.form.get("action") == "Recommendation":
             return redirect(url_for("rec.rec"))  
+        if request.form.get("action") == "Account":
+            return redirect(url_for("account.account")) 
 
     html = """
     <!DOCTYPE html>
@@ -105,6 +107,8 @@ def workout():
                 <li><a href="/home/">Home</a></li>
                 <li><a href="/workout/" class="active">Workout</a></li>
                 <li><a href="/goals/">Goals</a></li>
+                <li style="float:right"><a class="active" href="/account/">Account</a></li>            
+
             </ul>
         </nav>
 
