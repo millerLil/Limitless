@@ -1,82 +1,92 @@
-from flask import Flask, Blueprint, request, redirect, url_for, render_template
-import sqlite3
+from flask import Blueprint, request, redirect, url_for
 
-login_bp = Blueprint("login", __name__)
-def get_db_connection():
-    conn = sqlite3.connect('userDB.db', timeout=10.0)
-    conn.row_factory = sqlite3.Row
-    return conn
+workout_bp = Blueprint("workout", __name__)
+walk_bp = Blueprint("walk", __name__)
 
-def check_user(name, pw):
-    # Get database connection
-    conn = get_db_connection()
-    # Create cursor and run select to look for username
-    cur = conn.cursor()
-    cur.execute('SELECT userName, userPW FROM users WHERE userName = ?', (name,))    
-    # First row returned (should be only)
-    row = cur.fetchone()
-    # Close connection
-    conn.close()
-    # Nothing returned - user not found
-    if row is None: 
-        # user not found
-        print("User name not found")
-    # Username found but password doesn't match
-    elif row[1] != pw:
-        # invalid password
-        print("Invalid password")
-    # Both match - successful login
-    else:
-        print("Successful login")
-        return True
-       
-    return False
-
-@login_bp.route("/", methods=["GET", "POST"])
-def login():
-    message = ""
-    if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
-
-        import userStore
-        if check_user(username, password):
-        #if username == "user" and password == "1234":
-            userStore.set_user(username)
-            return redirect(url_for("home.home"))  # Redirect to the home page
-        else:
-            userStore.set_user("")
-            message = "Incorrect Username or Password."
-
-    html = f"""
+@walk_bp.route('/', methods=['GET', 'POST'])
+def walk():
+    if request.method == 'POST':
+        # Get data from the form
+        miles = request.form.get('miles')
+        calories = request.form.get('calories')
+        water = request.form.get('water')
+        
+        # Response with submitted data
+        return f"""
+        <h2>Data Submitted:</h2>
+        <p><strong>Miles:</strong> {miles}</p>
+        <p><strong>Calories Burned:</strong> {calories}</p>
+        <p><strong>Water:</strong> {water} oz</p>
+        <a href="/">Go back</a>
+        """
+    if request.form.get("action") == "Workout":
+        return redirect(url_for("workout.workout")) 
+    
+    # HTML for the form
+    html = """
     <!DOCTYPE html>
     <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Login Screen</title>
+        <title>Walking Tracker</title>
+        <style>
+            body {
+                margin: 0; 
+                padding: 0; 
+                display: flex; 
+                flex-direction: column; 
+                align-items: center; 
+                justify-content: center; 
+                height: 100vh; 
+                font-family: Arial, sans-serif; 
+                background: linear-gradient(to bottom, #6fb1fc, #add8e6);
+            }
+            nav {
+                position: absolute;
+                top: 0;
+                left: 0;
+                background-color: #333;
+                padding: 10px;
+            }
+            nav a {
+                color: white;
+                text-decoration: none;
+                font-size: 16px;
+                padding: 8px 16px;
+                border-radius: 4px;
+                background-color: #007bff;
+            }
+            nav a:hover {
+                background-color: #0056b3;
+            }
+        </style>
     </head>
-    <body style="display: flex; align-items: center; justify-content: center; height: 100vh;">
-        <div style="text-align: center; width: 500px; font-family: fantasy">
-            <h1>Limitless</h1>
-            <form method="POST">
-                <div style="font-family: sans-serif">
-                    <label>Username/Email:</label>
-                    <input type="text" name="username" required>
-                </div>
-                <div style="margin-top: 10px; font-family: sans-serif">
-                    <label>Password:</label>
-                    <input type="password" name="password" required>
-                </div>
-                <div style="margin-top: 20px; font-family: sans-serif">
-                    <button type="submit">Login</button>
-                </div>
-            </form>
-            <div style="margin-top: 15px; color: blue; text-decoration: underline;">
-                <a href="./register">Create an account</a>
+    <body>
+        <nav>
+            <a href="/workout/">Workout</a>
+        </nav>
+
+        <img src="data:image/png;base64,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" alt="Person Working Out" style="width: 150px; height: 150px; margin-bottom: 20px;">
+
+        <h2>Walking</h2>
+        <form method="POST">
+            <div>
+                <label for="miles">Miles:</label>
+                <input type="text" id="miles" name="miles" required>
             </div>
-            <p>{message}</p>
-        </div>
+            <div>
+                <label for="calories">Calories Burned:</label>
+                <input type="text" id="calories" name="calories" required>
+            </div>
+            <div>
+                <label for="water">Water (oz):</label>
+                <input type="text" id="water" name="water" required>
+            </div>
+            <div style="margin-top: 20px;">
+                <button type="submit">Submit</button>
+            </div>
+        </form>
     </body>
     </html>
     """
