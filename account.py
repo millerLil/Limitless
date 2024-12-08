@@ -1,9 +1,20 @@
-from flask import Blueprint
+from flask import Blueprint, request, redirect, url_for
 account_bp = Blueprint("account", __name__)
 
 
-@account_bp.route('/')
+@account_bp.route('/', methods=["GET", "POST"])
 def account():
+
+    if request.method == "POST":
+    # Redirect to the workout page if the Workout button is clicked
+        if request.form.get("action") == "Workout":
+            return redirect(url_for("workout.workout"))  
+        if request.form.get("action") == "Account":
+            return redirect(url_for("account.account")) 
+        if request.form.get("action") == "Goals":
+            return redirect(url_for("goals.goals")) 
+
+
     html = """
     <!DOCTYPE html>
     <html lang="en">
@@ -109,10 +120,10 @@ def account():
         <nav>
             <ul>
                 <li><h2>Limitless</h2></li>
-                <li><a href="/">Home</a></li>
-                <li><a href="#workout">Workout</a></li>
-                <li><a href="#goals">Goals</a></li>
-                <li style="float:right"><a class="active" href="/">Account</a></li>
+                <li><a href="/home">Home</a></li>
+                <li><a href="/workout">Workout</a></li>
+                <li><a href="/goals">Goals</a></li>
+                <li style="float:right"><a class="active" href="/account">Account</a></li>
             </ul>
         </nav>
 
@@ -135,3 +146,4 @@ def account():
     </html>
     """
     return html
+
