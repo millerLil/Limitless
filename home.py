@@ -135,14 +135,17 @@ def home():
 
             <div class="cards-container">
                 <div class="card" id="achievements-card">
+                    <img src="/static/img/badge.png" alt="achievements" width="60" height="50">
                     <h2>Achievements</h2>
                     <p>Badges will go here</p>
                 </div>
                 <div class="card" id="progress-card">
+                    <img src="/static/img/graph.png" alt="progress" width="60" height="50">
                     <h2>Progress</h2>
                     <p>Progress will go here</p>
                 </div>
                 <div class="card" id="goals-card">
+                    <img src="/static/img/goal.png" alt="goals" width="60" height="50">
                     <h2>Goals</h2>
                     <p>Goals will go here</p>
                 </div>

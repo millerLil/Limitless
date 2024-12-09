@@ -122,28 +122,28 @@ def workout():
                 <p>HIIT</p>
             </div>
             <div class="icon">
-                <img src="https://via.placeholder.com/50" alt="Running">
+                <img src="/static/img/running.png" alt="running">
                 <p>Running</p>
             </div>
             <div class="icon">
-                <img src="https://via.placeholder.com/50" alt="Yoga">
+                <img src="/static/img/yoga.jpg" alt="yoga">
                 <p>Yoga</p>
             </div>
             <div class="icon">
-                <img src="https://via.placeholder.com/50" alt="Sports">
+                <img src="/static/img/sports.png" alt="sports">
                 <p>Sports</p>
             </div>
             <div class="icon">
-                <img src="https://via.placeholder.com/50" alt="Swimming">
+                <img src="/static/img/swimming.png" alt="swimming">
                 <p>Swimming</p>
             </div>
             <div class="icon">
-                <img src="https://via.placeholder.com/50" alt="Recommendation">
-                <p><a href='/rec/'>Recommendation</a></p>
+                <img src="/static/img/cycling.png" alt="cycling">
+                <p>Cycling</p>
             </div>
             <div class="icon">
-                <img src="https://via.placeholder.com/50" alt="Cycling">
-                <p>Cycling</p>
+                <img src="/static/img/recommendation.png" alt="recommendation">
+                <p><a href='/rec/'>Recommendation</a></p>
             </div>
         </div>
     </body>
