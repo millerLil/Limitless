@@ -1,5 +1,6 @@
 from flask import Flask, Blueprint, request, redirect, url_for, render_template
 import sqlite3
+
 import database
 
 login_bp = Blueprint("login", __name__)
@@ -7,6 +8,11 @@ login_bp = Blueprint("login", __name__)
 def check_user(name, pw):
     # Get database connection
     conn = database.get_db_connection()
+
+def check_user(name, pw):
+    # Get database connection
+    conn = database.get_db_connection()
+
     # Create cursor and run select to look for username
     cur = conn.cursor()
     cur.execute('SELECT userName, userPW FROM users WHERE userName = ?', (name,))    
