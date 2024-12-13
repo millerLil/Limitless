@@ -271,8 +271,8 @@ def edit_profile():
                     <label for="name">Name:</label>
                     <input type="text" id="name" name="name" value="{{ profile.name }}">
 
-                    <label for="address">Address:</label>
-                    <input type="text" id="address" name="address" value="{{ profile.address }}">
+                    <label for="email-address">Email Address:</label>
+                    <input type="text" id="email-address" name="email-address" value="{{ profile.email-address }}">
 
                     <label for="phone_number">Phone Number:</label>
                     <input type="text" id="phone_number" name="phone_number" value="{{ profile.phone_number }}">

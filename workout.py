@@ -119,31 +119,31 @@ def workout():
             </div>
             <div class="icon">
                 <img src="/static/img/weightlifting.png" alt="Lifting">
-                <p>Lifting</p>
+                <p><a href='/lift/'>Lifting</a></p>
             </div>
             <div class="icon">
                 <img src="/static/img/HIIT.jpg" alt="HIIT">
-                <p>HIIT</p>
+                <p><a href='/hiit/'>HIIT</a></p>
             </div>
             <div class="icon">
-                <img src="/static/img/running.png" alt="running">
-                <p>Running</p>
+                <img src="/static/img/running.jpg" alt="Running">
+                <p><a href='/run/'>Running</a></p>
             </div>
             <div class="icon">
-                <img src="/static/img/yoga.jpg" alt="yoga">
-                <p>Yoga</p>
+                <img src="/static/img/yoga.png" alt="Yoga">
+                <p><a href='/yoga/'>Yoga</a></p>
             </div>
             <div class="icon">
                 <img src="/static/img/sports.png" alt="sports">
                 <p>Sports</p>
             </div>
             <div class="icon">
-                <img src="/static/img/swimming.png" alt="swimming">
-                <p>Swimming</p>
+                <img src="/static/img/swim.png" alt="Swimming">
+                <p><a href ='/swimming/'>Swimming</a></p>
             </div>
             <div class="icon">
-                <img src="/static/img/cycling.png" alt="cycling">
-                <p>Cycling</p>
+                <img src="/static/img/cycle.jpg" alt="Cycling">
+                <p><a href='/cycle/'>Cycling</a></p>
             </div>
             <div class="icon">
                 <img src="/static/img/recommendation.png" alt="recommendation">

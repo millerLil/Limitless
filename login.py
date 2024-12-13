@@ -1,93 +1,101 @@
-from flask import Blueprint, request, redirect, url_for
+from flask import Flask, Blueprint, request, redirect, url_for, render_template
+import sqlite3
 
-workout_bp = Blueprint("workout", __name__)
-walk_bp = Blueprint("walk", __name__)
+import database
 
-@walk_bp.route('/', methods=['GET', 'POST'])
-def walk():
-    if request.method == 'POST':
-        # Get data from the form
-        miles = request.form.get('miles')
-        calories = request.form.get('calories')
-        water = request.form.get('water')
-        
-        # Response with submitted data
-        return f"""
-        <h2>Data Submitted:</h2>
-        <p><strong>Miles:</strong> {miles}</p>
-        <p><strong>Calories Burned:</strong> {calories}</p>
-        <p><strong>Water:</strong> {water} oz</p>
-        <a href="/">Go back</a>
-        """
-    if request.form.get("action") == "Workout":
-        return redirect(url_for("workout.workout")) 
-    
-    # HTML for the form
-    html = """
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Walking Tracker</title>
-        <style>
-            body {
-                margin: 0; 
-                padding: 0; 
-                display: flex; 
-                flex-direction: column; 
-                align-items: center; 
-                justify-content: center; 
-                height: 100vh; 
-                font-family: Arial, sans-serif; 
-                background: linear-gradient(to bottom, #6fb1fc, #add8e6);
-            }
-            nav {
-                position: absolute;
-                top: 0;
-                left: 0;
-                background-color: #333;
-                padding: 10px;
-            }
-            nav a {
-                color: white;
-                text-decoration: none;
-                font-size: 16px;
-                padding: 8px 16px;
-                border-radius: 4px;
-                background-color: #007bff;
-            }
-            nav a:hover {
-                background-color: #0056b3;
-            }
-        </style>
-    </head>
-    <body>
-        <nav>
-            <a href="/workout/">Workout</a>
-        </nav>
+login_bp = Blueprint("login", __name__)
 
-        <img src="data:image/png;base64,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" alt="Person Working Out" style="width: 150px; height: 150px; margin-bottom: 20px;">
+def check_user(name, pw):
+    # Get database connection
+    conn = database.get_db_connection()
 
-        <h2>Walking</h2>
-        <form method="POST">
-            <div>
-                <label for="miles">Miles:</label>
-                <input type="text" id="miles" name="miles" required>
+def check_user(name, pw):
+    # Get database connection
+    conn = database.get_db_connection()
+
+    # Create cursor and run select to look for username
+    cur = conn.cursor()
+    cur.execute('SELECT userName, userPW FROM users WHERE userName = ?', (name,))    
+    # First row returned (should be only)
+    row = cur.fetchone()
+    # Close connection
+    conn.close()
+    # Nothing returned - user not found
+    if row is None: 
+        # user not found
+        print("User name not found")
+    # Username found but password doesn't match
+    elif row[1] != pw:
+        # invalid password
+        print("Invalid password")
+    # Both match - successful login
+    else:
+        print("Successful login")
+        return True
+       
+    return False
+
+@login_bp.route("/", methods=["GET", "POST"])
+def login():
+    message = ""
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+
+        import userStore
+        if check_user(username, password):
+        #if username == "user" and password == "1234":
+            userStore.set_user(username)
+            # Get user's current weight and store in User Store
+            weight = database.get_Weight_from_db(username)
+            userStore.set_weight(weight)
+            return redirect(url_for("home.home"))  # Redirect to the home page
+        else:
+            userStore.set_user("")
+            message = "Incorrect Username or Password."
+
+    html = f"""
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Login Screen</title>
+
+        </head>
+<body style="margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: Arial, sans-serif; background: linear-gradient(to bottom, #6fb1fc, #add8e6);">
+
+
+        <img src="data:image/png;base64,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" alt="Person Working Out" style="width: 150px; height: 150px; margin-bottom: 20px;">
+
+            
+            <div style="text-align: center; width: 500px; background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+                <!-- Title -->
+                <h1 style="font-size: 64px; color: white; text-shadow: 2px 2px 5px #000; margin-bottom: 20px;">Limitless</h1>
+
+                <!-- Form -->
+                <form method="POST">
+                    <div>
+                        <label for="username" style="display: block; margin-bottom: 5px; font-weight: bold;">Username/Email:</label>
+                        <input type="text" id="username" name="username" required style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <label for="password" style="display: block; margin-bottom: 5px; font-weight: bold;">Password:</label>
+                        <input type="password" id="password" name="password" required style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+                    </div>
+                    <div>
+                        <button type="submit" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-top: 15px;">Login</button>
+                    </div>
+                </form>
+
+                <!-- Link -->
+                <div style="margin-top: 15px;">
+                    <a href="./register" style="color: #007bff; text-decoration: none;">Create an account</a>
+                </div>
             </div>
-            <div>
-                <label for="calories">Calories Burned:</label>
-                <input type="text" id="calories" name="calories" required>
-            </div>
-            <div>
-                <label for="water">Water (oz):</label>
-                <input type="text" id="water" name="water" required>
-            </div>
-            <div style="margin-top: 20px;">
-                <button type="submit">Submit</button>
-            </div>
-        </form>
-    </body>
-    </html>
+
+
+        </body>
+        </html>
     """
     return html
