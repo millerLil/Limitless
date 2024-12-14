@@ -10,8 +10,6 @@ def workout():
             return redirect(url_for("walk.walk"))  
         if request.form.get("action") == "Recommendation":
             return redirect(url_for("rec.rec"))  
-        if request.form.get("action") == "Account":
-            return redirect(url_for("account.account")) 
 
     html = """
     <!DOCTYPE html>
@@ -104,10 +102,12 @@ def workout():
         <nav>
             <ul>
                 <li><h2>Limitless</h2></li>
-                <li><a href="/home/">Home</a></li>
-                <li><a href="/workout/" class="active">Workout</a></li>
-                <li><a href="/goals/">Goals</a></li>
-                <li style="float:right"><a class="active" href="/account/">Account</a></li>            
+                <li><a href="/home">Home</a></li>
+                <li><a href="/workout">Workout</a></li>
+                <li><a href="/goals">Goals</a></li>
+                <li><a href="/about">About Us</a></li>
+                <li style="float:right"><a class="active" href="/logout">Logout</a></li>
+                <li style="float:right"><a class="active" href="/profile">Profile</a></li>
 
             </ul>
         </nav>
@@ -134,20 +134,20 @@ def workout():
                 <p><a href='/yoga/'>Yoga</a></p>
             </div>
             <div class="icon">
-                <img src="/static/img/sports.png" alt="sports">
-                <p>Sports</p>
+                <img src="/static/img/sports.png" alt="Sports">
+                <p><a href='/sports/'>Sports</a></p>
             </div>
             <div class="icon">
                 <img src="/static/img/swim.png" alt="Swimming">
                 <p><a href ='/swimming/'>Swimming</a></p>
             </div>
             <div class="icon">
-                <img src="/static/img/cycle.jpg" alt="Cycling">
-                <p><a href='/cycle/'>Cycling</a></p>
+                <img src="/static/img/recommendation.png" alt="Recommendation">
+                <p><a href='/rec/'>Recommendation</a></p>
             </div>
             <div class="icon">
-                <img src="/static/img/recommendation.png" alt="recommendation">
-                <p><a href='/rec/'>Recommendation</a></p>
+                <img src="/static/img/cycle.jpg" alt="Cycling">
+                <p><a href='/cycle/'>Cycling</a></p>
             </div>
         </div>
     </body>
