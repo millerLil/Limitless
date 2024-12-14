@@ -1,5 +1,7 @@
 from flask import Blueprint, request, redirect, url_for
 import sqlite3
+import database
+import userStore
 from jinja2 import Template
 
 global insert_html
@@ -9,17 +11,11 @@ goalList = []
 
 del_goal_bp = Blueprint("goals/delete", __name__)
 
-def get_db_connection():
-    conn = sqlite3.connect('userDB.db', timeout=10.0)
-    conn.row_factory = sqlite3.Row
-    return conn
-
 def get_goals(userName):
-    print("get goals")
     global insert_html
     insert_html=""
     # Get database connection
-    conn = get_db_connection()
+    conn = database.get_db_connection()
     # Create cursor and run select to look for username
     cur = conn.cursor()
     # First pull all existing goals
@@ -39,26 +35,22 @@ def get_goals(userName):
     return True
 
 def print_goals(result, userName):
-    print("print goals")
     global goalList
     goalList = []
-    #goalNum = 0
     for goal in result:
-        #goalNum=goalNum+1
         goalList.append(goal[0])
         global insert_html
-        #insert_html= insert_html + '<li>' + goal[0] + '<button class="del_button" type="submit" name="del_goal" id="button"' + str(goalNum) + '>Delete</button></li>\n'
         insert_html= insert_html + '<li>' + goal[0] + '</li>\n'
-        print(insert_html)
     return True
 
 def del_num(userName, num):
-    print("del goal")
     global goalList
-    print(goalList[num])
-    
+    if num >= len(goalList):
+        message = "The goal list is not that long"
+        return message
+ 
     # Get database connection
-    conn = get_db_connection()
+    conn = database.get_db_connection()
     # Create cursor and run select to look for username
     cur = conn.cursor()
 
@@ -66,6 +58,7 @@ def del_num(userName, num):
         cur.execute("DELETE FROM goals WHERE userName=? and goal=?",
                     (userName, goalList[num])
                     )
+        message = "Successful delete"
     except sqlite3.Error as e:
         print("Error:", e.args[0])
         message = e.args[0]
@@ -77,22 +70,17 @@ def del_num(userName, num):
     cur.close()
     conn.close()    
 
-    return "Successful"
+    return message
 
 @del_goal_bp.route('/', methods=('GET', 'POST'))
 def del_goal():
-    print("delete goal")
-    #userName = userStore.get_user()
-    userName="diverdib" # Temporary
+    userName = userStore.get_user()
     # if this doesn't work, something is wrong with login
     get_goals(userName)
-    print("after get_goals")
-    print(request)
-    if request.method == "POST":
-        print("delete")            
+    if request.method == "POST":     
         goalNum = request.form["del_goal"]
         result = del_num(userName, int(goalNum)-1)
-        if (result == "Successful"):
+        if (result == "Successful delete"):
             print(result)
             message = result
             get_goals(userName)

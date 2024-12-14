@@ -16,7 +16,7 @@ connection = sqlite3.connect('userDB.db')
 #with open('activitySchema.sql') as f:
 #    connection.executescript(f.read())
     
-#with open('metSchema.sql') as f:
-#    connection.executescript(f.read())
+with open('metSchema.sql') as f:
+    connection.executescript(f.read())
 
 connection.close()
