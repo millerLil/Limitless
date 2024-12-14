@@ -139,7 +139,7 @@ def workout():
             </div>
             <div class="icon">
                 <img src="/static/img/swim.png" alt="Swimming">
-                <p><a href ='/swimming/'>Swimming</a></p>
+                <p><a href ='/swim/'>Swimming</a></p>
             </div>
             <div class="icon">
                 <img src="/static/img/recommendation.png" alt="Recommendation">
