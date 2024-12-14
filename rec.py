@@ -1,6 +1,6 @@
 from flask import Blueprint, request, redirect, url_for
 
-rec_bp = Blueprint("rec",__name__)
+rec_bp = Blueprint("rec", __name__)
 
 @rec_bp.route('/', methods=['GET', 'POST'])
 def rec():
@@ -21,45 +21,67 @@ def rec():
                 font-family: Arial, sans-serif;
                 margin: 0;
                 padding: 0;
+                background-color: #f4f4f4;
             }
-            header {
+
+            nav ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
                 background-color: #333;
-                color: #fff;
-                padding: 10px 0;
+            }
+
+            nav li {
+                float: left;
+            }
+
+            nav li h2 {
+                display: block;
+                color: lightblue;
                 text-align: center;
+                padding: 14px 16px;
+                margin: 0;
             }
-            nav {
-                display: flex;
-                justify-content: center;
-                background-color: #eee;
-                padding: 10px 0;
-            }
-            nav a {
-                margin: 0 15px;
+
+            nav li a {
+                display: block;
+                color: white;
+                text-align: center;
+                padding: 14px 16px;
                 text-decoration: none;
-                color: #333;
-                font-weight: bold;
             }
-            nav a.active {
-                color: blue;
-                border-bottom: 2px solid blue;
+
+            nav li a:hover {
+                background-color: lightblue;
+                color: black;
             }
+
+            .active {
+                background-color: lightskyblue;
+                color: black;
+            }
+
             .content {
                 padding: 20px;
                 text-align: center;
             }
+
             .workout-options {
                 display: flex;
                 justify-content: center;
                 gap: 20px;
                 margin-top: 20px;
             }
+
             .workout-option {
                 text-align: center;
             }
+
             .workout-option div {
                 font-size: 40px;
             }
+
             .footer-link {
                 color: blue;
                 text-decoration: underline;
@@ -69,6 +91,16 @@ def rec():
         </style>
     </head>
     <body>
+        <nav>
+            <ul>
+                <li><h2>Limitless</h2></li>
+                <li><a href="/home">Home</a></li>
+                <li><a href="/workout">Workout</a></li>
+                <li><a href="/goals">Goals</a></li>
+                <li><a href="/about">About Us</a></li>
+                <li style="float:right"><a class="active" href="/logout">Logout</a></li>
+            </ul>
+        </nav>
 
         <div class="content">
             <h2>Recommendation</h2>
@@ -85,5 +117,6 @@ def rec():
         </div>
     </body>
     </html>
-    """ 
+    """
     return html
+
