@@ -1,6 +1,7 @@
 from flask import Blueprint, request, url_for, redirect
 import sqlite3
 import database
+import userStore
 import getCalories
 from jinja2 import Template
 
@@ -33,8 +34,9 @@ def get_lifts(userName):
         return False
     
     if len(result) == 0:
-        print("No lifting activities found.")
         result = "No lifting activities found"
+        print(result)
+        return False
     
     print_activities(result, userName)
     
@@ -50,8 +52,7 @@ def print_activities(result, userName):
     else:
         for activity in result:
             insert_html = insert_html + '<li>' + activity[2] + ':  ' + str(activity[3]) + ' minutes, ' + str(activity[4]) + ' calories, ' + str(activity[5]) + 'oz of water</li>\n'
-    
-    print(f"html = {insert_html}")
+
     return True
 
 def add_activity(userName, act, miles, cal, water):
@@ -79,9 +80,7 @@ def add_activity(userName, act, miles, cal, water):
 
 @lift_bp.route('/', methods=['GET', 'POST'])
 def lift():
-
-    #userName = userStore.get_user()
-    userName="diverdib" # Temporary
+    userName = userStore.get_user()
     # if this doesn't work, something is wrong with login
     get_lifts(userName)
 
@@ -94,7 +93,6 @@ def lift():
         if calories == -1:
             print("No weight registered")
             calories = 0
-        print(f"calories = {calories}")
         result = add_activity(userName, "lifting", minutes, calories, water)
         if (result == "Successful activity add"):
             print(result)
@@ -115,33 +113,18 @@ def lift():
         <title>Lifting Tracker</title>
         <style>
             body {
-                margin: 0; 
-                padding: 0; 
-                display: flex; 
-                flex-direction: column; 
-                align-items: center; 
-                justify-content: center; 
-                height: 100vh; 
-                font-family: Arial, sans-serif; 
-                background: linear-gradient(to bottom, #6fb1fc, #add8e6);
+                font-family: Arial, sans-serif;
+                text-align: center;
+                margin-top: 50px;
             }
-            nav {
-                position: absolute;
-                top: 0;
-                left: 0;
-                background-color: #333;
-                padding: 10px;
+                        
+            .list {
+                text-align: left;
+                margin-left: 10px;
             }
-            nav a {
-                color: white;
-                text-decoration: none;
-                font-size: 16px;
-                padding: 8px 16px;
-                border-radius: 4px;
-                background-color: #007bff;
-            }
-            nav a:hover {
-                background-color: #0056b3;
+                        
+            form div {
+                margin: 10px 0;
             }
         </style>
     </head>
@@ -155,11 +138,11 @@ def lift():
         <h2>Lifting</h2>
         <form method="POST">
             <div class="act-container">
-                <div style="margin-top: 20px;">
+                <div>
                     <label for="minutes">Minutes:</label>
                     <input type="integer" id="minutes" name="minutes" required>
                 </div>
-                <div style="margin-top: 20px;">
+                <div>
                     <label for="intensity">Intensity:</label>
                     <select type= "text" name="intensity" id="intensity" required>
                         <option selected value="low">Low</option>
@@ -169,7 +152,7 @@ def lift():
                 </div>
             </div>
             <div class="addl-container">
-                <div style="margin-top: 20px;">
+                <div>
                     <label for="water">Water (oz):</label>
                     <input type="text" id="water" name="water" required>
                 </div>
@@ -192,4 +175,3 @@ def lift():
     </html>
     """)
     return template.render(actList=insert_html)
-
